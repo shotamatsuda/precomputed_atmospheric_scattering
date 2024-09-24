@@ -103,20 +103,20 @@ int main(int argc, char** argv) {
       GL_TEXTURE_2D,
       atmosphere::TRANSMITTANCE_TEXTURE_WIDTH *
           atmosphere::TRANSMITTANCE_TEXTURE_HEIGHT,
-      output_dir + "transmittance.dat");
+      output_dir + "transmittance.bin");
   SaveTexture(
       GL_TEXTURE1,
       GL_TEXTURE_3D,
       atmosphere::SCATTERING_TEXTURE_WIDTH *
           atmosphere::SCATTERING_TEXTURE_HEIGHT *
           atmosphere::SCATTERING_TEXTURE_DEPTH,
-      output_dir + "scattering.dat");
+      output_dir + "scattering.bin");
   SaveTexture(
       GL_TEXTURE2,
       GL_TEXTURE_2D,
       atmosphere::IRRADIANCE_TEXTURE_WIDTH *
           atmosphere::IRRADIANCE_TEXTURE_HEIGHT,
-      output_dir + "irradiance.dat");
+      output_dir + "irradiance.bin");
 
   return 0;
 }

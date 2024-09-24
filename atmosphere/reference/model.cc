@@ -72,14 +72,14 @@ the textures from disk, if they have already been precomputed.
 
 void Model::Init(unsigned int num_scattering_orders) {
   std::ifstream file;
-  file.open(cache_directory_ + "transmittance.dat");
+  file.open(cache_directory_ + "transmittance.bin");
   if (file.good()) {
     file.close();
-    transmittance_texture_->Load(cache_directory_ + "transmittance.dat");
-    scattering_texture_->Load(cache_directory_ + "scattering.dat");
+    transmittance_texture_->Load(cache_directory_ + "transmittance.bin");
+    scattering_texture_->Load(cache_directory_ + "scattering.bin");
     single_mie_scattering_texture_->Load(
-        cache_directory_ + "single_mie_scattering.dat");
-    irradiance_texture_->Load(cache_directory_ + "irradiance.dat");
+        cache_directory_ + "single_mie_scattering.bin");
+    irradiance_texture_->Load(cache_directory_ + "irradiance.bin");
     return;
   }
 
@@ -237,11 +237,11 @@ a texture in parallel).
     }, SCATTERING_TEXTURE_DEPTH);
   }
 
-  transmittance_texture_->Save(cache_directory_ + "transmittance.dat");
-  scattering_texture_->Save(cache_directory_ + "scattering.dat");
+  transmittance_texture_->Save(cache_directory_ + "transmittance.bin");
+  scattering_texture_->Save(cache_directory_ + "scattering.bin");
   single_mie_scattering_texture_->Save(
-      cache_directory_ + "single_mie_scattering.dat");
-  irradiance_texture_->Save(cache_directory_ + "irradiance.dat");
+      cache_directory_ + "single_mie_scattering.bin");
+  irradiance_texture_->Save(cache_directory_ + "irradiance.bin");
 }
 
 /*

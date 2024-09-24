@@ -83,7 +83,7 @@ integration_test: output/Release/atmosphere_integration_test
 	mkdir -p output/Doc/atmosphere/reference
 	output/Release/atmosphere_integration_test
 
-webgl: output/Doc/scattering.dat output/Doc/demo.html output/Doc/demo.js
+webgl: output/Doc/scattering.bin output/Doc/demo.html output/Doc/demo.js
 
 demo: output/Debug/atmosphere_demo
 	output/Debug/atmosphere_demo
@@ -96,7 +96,7 @@ output/Doc/%.html: % output/Debug/tools/docgen tools/docgen_template.html
 	mkdir -p $(@D)
 	output/Debug/tools/docgen $< tools/docgen_template.html $@
 
-output/Doc/scattering.dat: output/Debug/precompute
+output/Doc/scattering.bin: output/Debug/precompute
 	mkdir -p $(@D)
 	output/Debug/precompute $(@D)/
 

@@ -113,7 +113,7 @@ in the <code>Utils</code> class below):
     gl.bufferData(gl.ARRAY_BUFFER,
        new Float32Array([-1, -1, +1, -1, -1, +1, +1, +1]), gl.STATIC_DRAW);
 
-    Utils.loadTextureData('transmittance.dat', (data) => {
+    Utils.loadTextureData('transmittance.bin', (data) => {
       this.transmittanceTexture =
           Utils.createTexture(gl, gl.TEXTURE0, gl.TEXTURE_2D);
       gl.texImage2D(gl.TEXTURE_2D, 0,
@@ -121,7 +121,7 @@ in the <code>Utils</code> class below):
           TRANSMITTANCE_TEXTURE_WIDTH, TRANSMITTANCE_TEXTURE_HEIGHT, 0, gl.RGBA,
           gl.FLOAT, data);
     });
-    Utils.loadTextureData('scattering.dat', (data) => {
+    Utils.loadTextureData('scattering.bin', (data) => {
       this.scatteringTexture =
           Utils.createTexture(gl, gl.TEXTURE1, gl.TEXTURE_3D);
       gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_R, gl.CLAMP_TO_EDGE);
@@ -129,7 +129,7 @@ in the <code>Utils</code> class below):
           SCATTERING_TEXTURE_HEIGHT, SCATTERING_TEXTURE_DEPTH, 0, gl.RGBA,
           gl.FLOAT, data);
     });
-    Utils.loadTextureData('irradiance.dat', (data) => {
+    Utils.loadTextureData('irradiance.bin', (data) => {
       this.irradianceTexture =
           Utils.createTexture(gl, gl.TEXTURE2, gl.TEXTURE_2D);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16F, IRRADIANCE_TEXTURE_WIDTH,

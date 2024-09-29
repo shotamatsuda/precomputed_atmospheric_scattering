@@ -267,9 +267,10 @@ Number GetLayerDensity(IN(DensityProfileLayer) layer, Length altitude) {
 }
 
 Number GetProfileDensity(IN(DensityProfile) profile, Length altitude) {
-  return altitude < profile.layers[0].width ?
-      GetLayerDensity(profile.layers[0], altitude) :
-      GetLayerDensity(profile.layers[1], altitude);
+  DensityProfileLayer layers[2] = profile.layers;
+  return altitude < layers[0].width
+    ? GetLayerDensity(layers[0], altitude)
+    : GetLayerDensity(layers[1], altitude);
 }
 
 Length ComputeOpticalLengthToTopAtmosphereBoundary(

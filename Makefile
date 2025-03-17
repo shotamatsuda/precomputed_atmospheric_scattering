@@ -52,6 +52,8 @@ ifeq ($(UNAME),Windows)
     GLAD_OBJS := output/Debug/external/glad/src/glad.o
     SED := sed
 else
+    # See: https://stackoverflow.com/a/19072984
+    GPP_FLAGS := $(GPP_FLAGS) -D__gl_h_ -DGL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
     GL_FLAGS := -framework OpenGL -framework GLUT
     GLAD_OBJS :=
     SED := gsed

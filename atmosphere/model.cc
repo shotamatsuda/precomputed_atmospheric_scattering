@@ -41,9 +41,15 @@ described in Algorithm 4.1 of
 of the following C++ code.
 */
 
+#define GL_SILENCE_DEPRECATION
+
 #include "atmosphere/model.h"
 
+#ifdef __APPLE__
+#include <OpenGL/gl3.h>
+#else // __APPLE__
 #include <glad/glad.h>
+#endif // __APPLE__
 
 #include <cassert>
 #include <cmath>

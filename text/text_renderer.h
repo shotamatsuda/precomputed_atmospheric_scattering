@@ -27,10 +27,16 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#define GL_SILENCE_DEPRECATION
+
 #ifndef TEXT_TEXT_RENDERER_H_
 #define TEXT_TEXT_RENDERER_H_
 
+#ifdef __APPLE__
+#include <OpenGL/gl3.h>
+#else // __APPLE__
 #include <glad/glad.h>
+#endif // __APPLE__
 
 #include <string>
 

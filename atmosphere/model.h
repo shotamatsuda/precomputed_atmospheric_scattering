@@ -146,10 +146,17 @@ parameter):
 <p>The concrete API definition is the following:
 */
 
+#define GL_SILENCE_DEPRECATION
+
 #ifndef ATMOSPHERE_MODEL_H_
 #define ATMOSPHERE_MODEL_H_
 
+#ifdef __APPLE__
+#include <OpenGL/gl3.h>
+#else // __APPLE__
 #include <glad/glad.h>
+#endif // __APPLE__
+
 #include <array>
 #include <functional>
 #include <string>

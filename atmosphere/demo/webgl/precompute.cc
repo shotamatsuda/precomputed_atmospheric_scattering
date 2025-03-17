@@ -36,8 +36,15 @@ textures and creates the shaders), its shaders and textures are read back using
 the OpenGL API, and are saved to disk:
 */
 
+#define GL_SILENCE_DEPRECATION
+
+#ifdef __APPLE__
+#include <OpenGL/gl3.h>
+#include <GLUT/glut.h>
+#else // __APPLE__
 #include <glad/glad.h>
 #include <GL/freeglut.h>
+#endif // __APPLE__
 
 #include <memory>
 #include <fstream>
@@ -73,10 +80,16 @@ void SaveTexture(const GLenum texture_unit, const GLenum texture_target,
 }
 
 int main(int argc, char** argv) {
+  #if !defined(__APPLE__)
   glutInitContextVersion(3, 3);
   glutInitContextProfile(GLUT_CORE_PROFILE);
+  #endif // !defined(__APPLE__)
   glutInit(&argc, argv);
+  #ifdef __APPLE__
+  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_3_2_CORE_PROFILE);
+  #else // __APPLE__
   glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
+  #endif // __APPLE__
 
   std::unique_ptr<Demo> demo(new Demo(0, 0));
   demo->model().SetProgramUniforms(demo->program(), 0, 1, 2);

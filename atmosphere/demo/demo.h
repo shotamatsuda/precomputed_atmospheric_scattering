@@ -37,10 +37,16 @@ atmosphere model and to the GLSL program, vertex buffers and text renderer used
 to render the scene and the help messages:
 */
 
+#define GL_SILENCE_DEPRECATION
+
 #ifndef ATMOSPHERE_DEMO_DEMO_H_
 #define ATMOSPHERE_DEMO_DEMO_H_
 
+#ifdef __APPLE__
+#include <OpenGL/gl3.h>
+#else // __APPLE__
 #include <glad/glad.h>
+#endif // __APPLE__
 
 #include <memory>
 

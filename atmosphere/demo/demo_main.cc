@@ -33,21 +33,34 @@
 application.
 */
 
+#define GL_SILENCE_DEPRECATION
+
 #include "atmosphere/demo/demo.h"
 
+#ifdef __APPLE__
+#include <OpenGL/gl3.h>
+#include <GLUT/glut.h>
+#else // __APPLE__
 #include <glad/glad.h>
 #include <GL/freeglut.h>
+#endif // __APPLE__
 
 #include <memory>
 
 using atmosphere::demo::Demo;
 
 int main(int argc, char** argv) {
+  #if !defined(__APPLE__)
   glutInitContextVersion(3, 3);
   glutInitContextProfile(GLUT_CORE_PROFILE);
+  #endif // !defined(__APPLE__)
   glutInit(&argc, argv);
+  #ifdef __APPLE__
+  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_3_2_CORE_PROFILE);
+  #else // __APPLE__
   glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
   glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
+  #endif // __APPLE__
 
   std::unique_ptr<Demo> demo(new Demo(1024, 576));
   glutMainLoop();

@@ -59,10 +59,17 @@ the GPU and CPU versions of our algorithm, we need to include the GPU and CPU
 model definitions:
 */
 
+#define GL_SILENCE_DEPRECATION
+
 #include "atmosphere/reference/model.h"
 
+#ifdef __APPLE__
+#include <OpenGL/gl3.h>
+#include <GLUT/glut.h>
+#else // __APPLE__
 #include <glad/glad.h>
 #include <GL/freeglut.h>
+#endif // __APPLE__
 
 #include <array>
 #include <fstream>
@@ -364,19 +371,27 @@ provide a separate method to initialize it:
     if (!glutGet(GLUT_INIT_STATE)) {
       int argc = 0;
       char** argv = nullptr;
+      #if !defined(__APPLE__)
       glutInitContextVersion(3, 3);
       glutInitContextProfile(GLUT_CORE_PROFILE);
+      #endif // !defined(__APPLE__)
       glutInit(&argc, argv);
+      #ifdef __APPLE__
+      glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_3_2_CORE_PROFILE);
+      #else // __APPLE__
       glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
+      #endif // __APPLE__
       glutInitWindowSize(kWidth, kHeight);
       glutCreateWindow("ModelTest");
       glutHideWindow();
+      #if !defined(__APPLE__)
       if (!gladLoadGL()) {
         throw std::runtime_error("GLAD initialization failed");
       }
       if (!GLAD_GL_VERSION_3_3) {
         throw std::runtime_error("OpenGL 3.3 or higher is required");
       }
+      #endif // !defined(__APPLE__)
     }
 
     std::vector<double> wavelengths;

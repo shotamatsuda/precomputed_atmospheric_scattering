@@ -26,6 +26,12 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+ifeq ($(OS),Windows_NT)
+    UNAME := Windows
+else
+    UNAME := $(shell uname)
+endif
+
 GPP := g++
 GPP_FLAGS := -Wall -Wmain -pedantic -pedantic-errors -std=c++11
 INCLUDE_FLAGS := \
@@ -40,6 +46,16 @@ SOURCES := $(shell find $(DIRS) -name "*.cc")
 GLSL_SOURCES := $(shell find $(DIRS) -name "*.glsl")
 JS_SOURCES := $(shell find $(DIRS) -name "*.js")
 DOC_SOURCES := $(HEADERS) $(SOURCES) $(GLSL_SOURCES) $(JS_SOURCES) index
+
+ifeq ($(UNAME),Windows)
+    GL_FLAGS := -lglut -lGL
+    GLAD_OBJS := output/Debug/external/glad/src/glad.o
+    SED := sed
+else
+    GL_FLAGS := -framework OpenGL -framework GLUT
+    GLAD_OBJS :=
+    SED := gsed
+endif
 
 all: lint doc test integration_test webgl demo
 
@@ -109,23 +125,23 @@ output/Release/atmosphere_integration_test: \
     output/Release/external/dimensional_types/test/test_main.o \
     output/Release/external/glad/src/glad.o \
     output/Release/external/progress_bar/util/progress_bar.o
-	$(GPP) $^ -pthread -ldl -lglut -lGL -o $@
+	$(GPP) $^ -pthread -ldl $(GL_FLAGS) -o $@
 
 output/Debug/precompute: \
     output/Debug/atmosphere/demo/demo.o \
     output/Debug/atmosphere/demo/webgl/precompute.o \
     output/Debug/atmosphere/model.o \
     output/Debug/text/text_renderer.o \
-    output/Debug/external/glad/src/glad.o
-	$(GPP) $^ -pthread -ldl -lglut -lGL -o $@
+    $(GLAD_OBJS)
+	$(GPP) $^ -pthread -ldl $(GL_FLAGS) -o $@
 
 output/Debug/atmosphere_demo: \
     output/Debug/atmosphere/demo/demo.o \
     output/Debug/atmosphere/demo/demo_main.o \
     output/Debug/atmosphere/model.o \
     output/Debug/text/text_renderer.o \
-    output/Debug/external/glad/src/glad.o
-	$(GPP) $^ -pthread -ldl -lglut -lGL -o $@
+    $(GLAD_OBJS)
+	$(GPP) $^ -pthread -ldl $(GL_FLAGS) -o $@
 
 output/Debug/%.o: %.cc
 	mkdir -p $(@D)
@@ -148,6 +164,6 @@ output/Debug/atmosphere/demo/demo.o output/Release/atmosphere/demo/demo.o: \
     atmosphere/demo/demo.glsl.inc
 
 %.glsl.inc: %.glsl
-	sed -e '1i const char $(*F)_glsl[] = R"***(' -e '$$a )***";' \
+	$(SED) -e '1i const char $(*F)_glsl[] = R"***(' -e '$$a )***";' \
 	    -e '/^\/\*/,/\*\/$$/d' -e '/^ *\/\//d' -e '/^$$/d' $< > $@
 

@@ -37,10 +37,17 @@ independent of our atmosphere model. The only part which is related to it is the
 <code>InitModel</code> method).
 */
 
+#define GL_SILENCE_DEPRECATION
+
 #include "atmosphere/demo/demo.h"
 
+#ifdef __APPLE__
+#include <OpenGL/gl3.h>
+#include <GLUT/glut.h>
+#else // __APPLE__
 #include <glad/glad.h>
 #include <GL/freeglut.h>
+#endif // __APPLE__
 
 #include <algorithm>
 #include <cmath>
@@ -117,12 +124,14 @@ Demo::Demo(int viewport_width, int viewport_height) :
   glutInitWindowSize(viewport_width, viewport_height);
   window_id_ = glutCreateWindow("Atmosphere Demo");
   INSTANCES[window_id_] = this;
+  #if !defined(__APPLE__)
   if (!gladLoadGL()) {
     throw std::runtime_error("GLAD initialization failed");
   }
   if (!GLAD_GL_VERSION_3_3) {
     throw std::runtime_error("OpenGL 3.3 or higher is required");
   }
+  #endif // !defined(__APPLE__)
 
   glutDisplayFunc([]() {
     INSTANCES[glutGetWindow()]->HandleRedisplayEvent();
@@ -139,9 +148,11 @@ Demo::Demo(int viewport_width, int viewport_height) :
   glutMotionFunc([](int x, int y) {
     INSTANCES[glutGetWindow()]->HandleMouseDragEvent(x, y);
   });
+  #if !defined(__APPLE__)
   glutMouseWheelFunc([](int button, int dir, int x, int y) {
     INSTANCES[glutGetWindow()]->HandleMouseWheelEvent(dir);
   });
+  #endif // !defined(__APPLE__)
 
   glGenVertexArrays(1, &full_screen_quad_vao_);
   glBindVertexArray(full_screen_quad_vao_);

@@ -110,7 +110,7 @@ Demo::Demo(int viewport_width, int viewport_height) :
     use_constant_solar_spectrum_(false),
     use_ozone_(true),
     use_combined_textures_(true),
-    use_half_precision_(true),
+    use_half_precision_(false),
     use_luminance_(NONE),
     do_white_balance_(false),
     show_help_(true),

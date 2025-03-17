@@ -1249,7 +1249,7 @@ RadianceDensitySpectrum ComputeScatteringDensity(
           atmosphere.rayleigh_density, r - atmosphere.bottom_radius);
       Number mie_density = GetProfileDensity(
           atmosphere.mie_density, r - atmosphere.bottom_radius);
-      rayleigh_mie += incident_radiance * (
+      rayleigh_mie += max(incident_radiance, 0.0001) * (
           atmosphere.rayleigh_scattering * rayleigh_density *
               RayleighPhaseFunction(nu2) +
           atmosphere.mie_scattering * mie_density *
